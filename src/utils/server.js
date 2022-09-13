@@ -1,6 +1,9 @@
 const cors = require("cors");
 const express = require("express");
 const expressPino = require("express-pino-logger");
+const bodyParser = require("body-parser")
+const jwt = require("jsonwebtoken");
+const User = require("../models/userModel");
 
 const logger = require("./logger");
 const routes = require("../routes");
@@ -26,9 +29,8 @@ class SetupServer {
   async init() {
     this.setupExpress();
     this.setupControllers();
-    this.start();
+    
     //must be the last
-
     this.setupErrorHandlers();
   }
 
@@ -47,10 +49,10 @@ class SetupServer {
         origin: "*",
       })
     );
-    app.use(async (req, res, next) => {
+    this.app.use(async (req, res, next) => {
       if (req.headers["x-access-token"]) {
         const accessToken = req.headers["x-access-token"];
-        const { userId, exp } = await jwt.verify(
+        const { userId, exp } = jwt.verify(
           accessToken,
           process.env.JWT_SECRET
         );
@@ -81,12 +83,12 @@ class SetupServer {
     this.app.all("*", (req, res) => res.send({ message: "route not found" }));
   }
 
-  setupErrorHandlers() {
+  setupErrorHandlers() {   
     this.app.use((err, _, res, __) => {
       if (err.name === "HttpError") {
         return res.status(500).json({ success: false, error: err.name });
       }
-      res.status(500).json({ success: false, error: `An error occurred` });
+      res.status(500).json({ success: false, error: `An error occurred\n ${err.message}` });
     });
   }
 

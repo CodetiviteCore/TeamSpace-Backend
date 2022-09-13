@@ -30,7 +30,8 @@ process.on("uncaughtException", (error) => {
 (async () => {
   try {
     const server = new SetupServer(PORT);
-    await server.init();    
+    await server.init(); 
+    await server.start();   
 
     const exitSignals = ["SIGINT", "SIGTERM", "SIGQUIT"];
 

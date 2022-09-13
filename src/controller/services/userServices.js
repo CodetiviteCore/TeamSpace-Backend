@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 async function hashPassword(password) {
-  return await bcrypt.hash(password, process.env.SALT);
+  return bcrypt.hash(password, 10);
 }
 
 async function validatePassword(passwordHash, plainPassword) {
@@ -14,6 +14,7 @@ exports.signup = async (req, res, next) => {
   try {
     const { email, password, role } = req.body;
     const passwordHash = await hashPassword(password);
+
     const newUser = new User({
       email,
       password: passwordHash,
@@ -45,13 +46,13 @@ exports.login = async (req, res, next) => {
   try {
     const { password, email } = req.body;
 
-    let user = User.findOne({ email });
+    let user = await User.findOne({ email });
 
     if (!user) {
       return next(new Error(error));
     }
 
-    const validPassword = await validatePassword(password.user.password);
+    const validPassword = await validatePassword(user.password, password);
 
     if (!validPassword) {
       return next(new Error(error));
