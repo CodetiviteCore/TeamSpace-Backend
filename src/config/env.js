@@ -1,7 +1,10 @@
 const joi = require("joi");
 const logger = require("../utils/logger");
+console.log(process.env.MONGODB_URI, 'mongodburi');
 
 require("dotenv").config();
+
+MONGODB_URI = "mongodb+srv://Teamspace:Teamspace@teamspace-ua.bwi4owb.mongodb.net/?retryWrites=true&w=majority;"
 
 const schema = joi
   .object({
@@ -10,7 +13,7 @@ const schema = joi
       .valid("development", "production", "test", "provision")
       .default("development"),
     TOKEN_EXPIRES: joi.number(),
-    PORT: joi.number().required(),
+    PORT: 4010,
   })
   .unknown()
   .required();
@@ -22,8 +25,9 @@ if (error) {
 }
 
 const secrets = {
-  PORT: env.PORT,
+  PORT: 4010,
   env: env.NODE_ENV,
+  mongoose: env.MONGODB_URI
 };
 
 module.exports = secrets;

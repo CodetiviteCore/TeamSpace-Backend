@@ -8,7 +8,7 @@ const User = require("../models/userModel");
 const logger = require("./logger");
 const routes = require("../routes");
 const { PORT } = require("../config/env");
-const {database} = require("../config/database");
+const { database } = require("../config/database");
 
 class SetupServer {
   app = express();
@@ -110,7 +110,7 @@ class SetupServer {
   }
 
   start() {
-    this.server = this.app.listen(this.port || 4001, () => {
+    this.server = this.app.listen(this.port || 4011, () => {
       logger.info("Server listening on port: " + this.port);
     });
   }
