@@ -2,6 +2,7 @@ const { Router } = require("express");
 const auth = require("../middlewares/auth");
 const repo = require("../controller/repository/userRepository");
 const services = require("../controller/services/userServices");
+const categories = require("../controller/services/categoryServices");
 
 const router = Router();
 
@@ -21,5 +22,12 @@ router.delete(
   auth.grantAccess("deleteAny", "profile"),
   repo.deleteUser
 );
+
+router.post("/addCategory", categories.addCategory
+);
+
+router.get("/fetchCategories", categories.fetchCategories
+);
+
 
 module.exports = router;

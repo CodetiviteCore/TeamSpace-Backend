@@ -5,7 +5,10 @@ const Schema = mongoose.Schema;
 
 const categorySchema = new Schema ({
        
-    name: string,
+    name: {
+        type: String,
+        required: true
+    }
     
 });
 
