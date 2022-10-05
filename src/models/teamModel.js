@@ -1,6 +1,7 @@
 const { string } = require("joi");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId
 
 
 const teamSchema = new Schema ({
@@ -21,16 +22,11 @@ const teamSchema = new Schema ({
       required: true,
       trim: true
     },
-    members: {
-        type: String,
+    members: [{
+        type: ObjectId,
+        ref: "User",
         required: true,
-        trim: true
-    },
-    contact: {
-      type: string,
-      required: true,
-      trim: true
-
+    }],
     },
     createdAt: {
     type: Date,
