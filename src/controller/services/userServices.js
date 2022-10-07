@@ -12,10 +12,11 @@ async function validatePassword(passwordHash, plainPassword) {
 
 exports.signup = async (req, res, next) => {
   try {
-    const { email, password, role } = req.body;
+    const { fullname, email, password, role } = req.body;
     const passwordHash = await hashPassword(password);
 
     const newUser = new User({
+      fullname,
       email,
       password: passwordHash,
       role: role || "basic",
